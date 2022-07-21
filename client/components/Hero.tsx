@@ -6,12 +6,15 @@ import { MbButton, MbAction, EState, MbText } from 'mintbase-ui'
 import Link from 'next/link'
 import Image from 'next/image'
 import WalletConnectButton from './WalletConnectButton'
+import Navigation from './Navigation'
 
 const Hero = ({ title = "Build on your own Smart Contract", description = "Cheap & scalable infrastructure for your NFT project"}) => {
-  const { wallet, isConnected, details } = useWallet()
+  const { wallet, isConnected, details } = useWallet();
+ 
   return (
     <>
-      <div className="w-full py-24 px-6 bg-cover bg-no-repeat bg-center relative z-10 dark:bg-mb-background">
+      <div style={{ position: 'relative'}} className="w-full py-24 px-6 bg-cover bg-no-repeat bg-center relative z-10 dark:bg-mb-background">
+      <Navigation />
         <div className="container flex flex-col gap-8 max-w-4xl mx-auto text-center justify-center">
           <MbText className="heading-130 text-white">
             {title}

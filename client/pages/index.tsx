@@ -4,6 +4,7 @@ import Container from '../components/Layout/Container'
 import Card from '../components/Card'
 import Link from 'next/link'
 import CouponCard from '../components/CouponCard'
+import Navigation from '../components/Navigation'
 
 
 
@@ -52,6 +53,7 @@ const MarketPlace = () => {
                 title='Koopon'
                 description='Create, Transfer, Trade & Redeem Coupons'
             />
+
 
             <div className='p-4 flex '>
                 {
