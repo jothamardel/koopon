@@ -1,0 +1,12 @@
+{
+  "name": "koopon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd ./client && yarn dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
