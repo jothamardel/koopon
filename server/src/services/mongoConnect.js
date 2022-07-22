@@ -1,5 +1,4 @@
 require("dotenv").config();
-console.log(process.env.mongoURI);
 const mongoose = require("mongoose");
 
 mongoose.connection.on("open", () => {
@@ -11,7 +10,7 @@ mongoose.connection.on("error", (err) => {
 });
 
 const mongoConnect = async () => {
-  await mongoose.connect(`${process.env.mongoURI}`, {
+  await mongoose.connect(`${mongoURI}`, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });
