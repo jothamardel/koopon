@@ -22,6 +22,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     },
   })
 
+  
+
   return (
     <WalletProvider apiKey={process.env.NEXT_PUBLIC_MINTBASEJS_API_KEY || ''}>
       <ApolloProvider client={apolloClient}>
