@@ -1,5 +1,4 @@
 require("dotenv").config();
-console.log(process.env.mongoURI);
 
 const http = require("http");
 const PORT = process.env.PORT || 8000;
