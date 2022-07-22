@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "cd ./client && yarn dev",
-    "serve": "cd ./server && npm run watch"
+    "serve": "cd ./server && npm run watch",
+    "install": "cd ./server && npm install",
+    "start": "cd ./server && node start"
   },
   "keywords": [],
   "author": "",

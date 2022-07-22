@@ -1,6 +1,8 @@
 require("dotenv").config();
 const mongoose = require("mongoose");
 
+mongoURI="mongodb+srv://manji:JQxRfDr40LzdXrmo@cluster0.un0ubvu.mongodb.net/?retryWrites=true&w=majority";
+
 mongoose.connection.on("open", () => {
   console.log(`DB connected @ ${mongoose.connection.host}`);
 });
