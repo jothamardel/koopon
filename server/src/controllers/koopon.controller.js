@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const { Koopon } = require("../model/kooponModal");
 async function createKoopon(req, res) {
   console.log(req.body);
@@ -7,10 +6,10 @@ async function createKoopon(req, res) {
     price,
     store_name,
     discount,
+    description,
     start_date,
     expiry_date,
     quantity,
-    issued_token,
   } = req.body;
   if (
     !account_id ||
@@ -20,14 +19,13 @@ async function createKoopon(req, res) {
     !start_date ||
     !expiry_date ||
     !quantity ||
-    !issued_token
+    !description
   ) {
     res.status(400).json({
       message: `fields missing`,
     });
   }
   try {
-    //check if Koopon already exists
     let data = await Koopon.findOneAndUpdate({ account_id }, { ...req.body });
     const allData = await Koopon.find({ account_id });
     console.log(data);
