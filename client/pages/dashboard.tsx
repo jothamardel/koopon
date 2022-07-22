@@ -1,11 +1,16 @@
-
+import Welcome from '../components/profile/Welcome';
+import { MbButton } from 'mintbase-ui';
+import Modal  from '../components/Modal/index'
 
 
 const Dashboard = () => {
 
     return (
         <>
-            Dashboard
+            <Welcome />
+            <Modal />
+            
+            
         </>
     )
 }
