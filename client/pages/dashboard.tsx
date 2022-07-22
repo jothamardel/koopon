@@ -25,6 +25,12 @@ const Dashboard = () => {
         setData(newData)
     }
 
+    function onSubmit() {
+        const newData = {...data}
+        newData.account_id = wallet?.activeAccount?.accountId ;
+        console.log(newData)
+    }
+
 
 
     async function createStore() {
@@ -90,19 +96,36 @@ const Dashboard = () => {
                                 <div className="space-y-3">
                                     <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="name">Coupon Name <span className="text-rose-500">*</span></label>
-                                        <input id="name" className="form-input w-full px-2 py-1 border" type="text" required />
+                                        <input onChange={updateData} id="name" name="store_name" className="form-input w-full px-2 py-1 border" type="text" required />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-1" htmlFor="email">Email <span className="text-rose-500">*</span></label>
-                                        <input id="email" className="form-input w-full px-2 py-1 border" type="email" required />
+                                        <label className="block text-sm font-medium mb-1" htmlFor="feedback">Description<span className="text-rose-500">*</span></label>
+                                        <textarea name="description" id="feedback" className="form-textarea w-full px-2 py-1 border"  required></textarea>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-1" htmlFor="feedback">Message <span className="text-rose-500">*</span></label>
-                                        <textarea id="feedback" className="form-textarea w-full px-2 py-1 border"  required></textarea>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="Tokens">Amount Of Token<span className="text-rose-500">*</span></label>
+                                        <input name="quantity" onChange={updateData} id="token" className="form-input w-full px-2 py-1 border" type="Number" required />
                                     </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="price">Price<span className="text-rose-500">*</span></label>
+                                        <input name="price" onChange={updateData} id="name" className="form-input w-full px-2 py-1 border" type="Number" required />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="discount">Discount(%) <span className="text-rose-500">*</span></label>
+                                        <input name="discount" onChange={updateData} id="name" className="form-input w-full px-2 py-1 border" type="Number" required />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="start date"> Start Date <span className="text-rose-500">*</span></label>
+                                        <input name="start_date" onChange={updateData} id="name" className="form-input w-full px-2 py-1 border" type="date" required />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="end date"> End Date <span className="text-rose-500">*</span></label>
+                                        <input name="end_date" onChange={updateData} id="name" className="form-input w-full px-2 py-1 border" type="date" required />
+                                    </div>
+                                   
                                     <div className="flex flex-wrap justify-end space-x-2">
                                         
-                                        <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Create</button>
+                                        <button onClick={onSubmit} className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Create</button>
                                         <button onClick={() => setShowModal(false)} className='p-1.5 shrink-0 rounded bg-red text-color-white mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Close</button>
                                     </div>
                                     </div>
