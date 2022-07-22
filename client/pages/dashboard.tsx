@@ -12,6 +12,19 @@ const Dashboard = () => {
     const [stores, setStores] = useState([])
     const [showModal, setShowModal] = useState(false);
 
+    const [data, setData] = useState({});
+
+
+
+    function updateData(event) {
+        const { name, value } = event.target;
+
+        const newData = {...data}
+        newData[name] = value;
+
+        setData(newData)
+    }
+
 
 
     async function createStore() {
