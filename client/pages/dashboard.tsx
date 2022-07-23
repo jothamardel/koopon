@@ -12,7 +12,8 @@ const Dashboard = () => {
     const [stores, setStores] = useState([])
     const [showModal, setShowModal] = useState(false);
 
-    const [data, setData] = useState({});
+    const [data, setData] = useState([{}]);
+    console.log(data)
 
 
 
@@ -29,6 +30,7 @@ const Dashboard = () => {
         const newData = {...data}
         newData.account_id = wallet?.activeAccount?.accountId ;
         console.log(newData)
+        
     }
 
 
@@ -73,16 +75,7 @@ const Dashboard = () => {
             <Welcome />
             <div className="p-4 flex" style={{}}>
                 <CouponCard {
-                    ...{
-                        store_name: "Store 37",
-                        is_used: false,
-                        quantity: 5,
-                        discount: "25%",
-                        start_date: `2022-07-21`,
-                        expiry_date: '2022-11-10',
-                        issued_token: 1,
-                        price: 1.4
-                    }
+                    ...data
                 }/>
                 
                 <AddCoupon setShowModal={setShowModal}/>
@@ -96,31 +89,31 @@ const Dashboard = () => {
                                 <div className="space-y-3">
                                     <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="name">Coupon Name <span className="text-rose-500">*</span></label>
-                                        <input onChange={updateData} id="name" name="store_name" className="form-input w-full px-2 py-1 border" type="text" required />
+                                        <input onChange={(e)=>updateData(e)} id="name" name="store_name" className="form-input w-full px-2 py-1 border" type="text" required />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="feedback">Description<span className="text-rose-500">*</span></label>
-                                        <textarea name="description" id="feedback" className="form-textarea w-full px-2 py-1 border"  required></textarea>
+                                        <textarea onChange={(e)=>updateData(e)} name="description" id="feedback" className="form-textarea w-full px-2 py-1 border"  required></textarea>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="Tokens">Amount Of Token<span className="text-rose-500">*</span></label>
-                                        <input name="quantity" onChange={updateData} id="token" className="form-input w-full px-2 py-1 border" type="Number" required />
+                                        <input name="quantity" onChange={(e)=>updateData(e)} id="token" className="form-input w-full px-2 py-1 border" type="Number" required />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="price">Price<span className="text-rose-500">*</span></label>
-                                        <input name="price" onChange={updateData} id="name" className="form-input w-full px-2 py-1 border" type="Number" required />
+                                        <input name="price" onChange={(e)=>updateData(e)} id="name" className="form-input w-full px-2 py-1 border" type="Number" required />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="discount">Discount(%) <span className="text-rose-500">*</span></label>
-                                        <input name="discount" onChange={updateData} id="name" className="form-input w-full px-2 py-1 border" type="Number" required />
+                                        <input name="discount" onChange={(e)=>updateData(e)} id="name" className="form-input w-full px-2 py-1 border" type="Number" required />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="start date"> Start Date <span className="text-rose-500">*</span></label>
-                                        <input name="start_date" onChange={updateData} id="name" className="form-input w-full px-2 py-1 border" type="date" required />
+                                        <input name="start_date" onChange={(e)=>updateData(e)} id="name" className="form-input w-full px-2 py-1 border" type="date" required />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium mb-1" htmlFor="end date"> End Date <span className="text-rose-500">*</span></label>
-                                        <input name="end_date" onChange={updateData} id="name" className="form-input w-full px-2 py-1 border" type="date" required />
+                                        <input name="end_date" onChange={(e)=>updateData(e)} id="name" className="form-input w-full px-2 py-1 border" type="date" required />
                                     </div>
                                    
                                     <div className="flex flex-wrap justify-end space-x-2">
