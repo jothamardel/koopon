@@ -19,20 +19,25 @@ import Image from '../../images/transactions-image-04.svg';
 
 
 function CouponCard({
+  _id,
   store_name,
+  description,
   is_minted,
   quantity,
   discount,
   start_date,
   expiry_date,
   issued_token,
-  price
+  price,
+  setData,
+  setSection,
+  setShowModal
 }) {
   
   return (
     <>
       {/* Details */}
-      <div className="drop-shadow-lg mt-12 mx-4" style={{ maxWidth: '15rem'}}>
+      <div className="drop-shadow-lg mt-12 mx-4" style={{ maxWidth: '20rem'}}>
         
         <div className="bg-white rounded-t-xl px-5 pb-2.5 text-center">
           <div className="mb-3 text-center">
@@ -40,9 +45,49 @@ function CouponCard({
           </div>
           <div className="text-2xl font-semibold text-emerald-500 mb-1">{price}N</div>
           <div className="text-sm font-medium text-slate-800 mb-3">{store_name}</div>
-          <div className="text-xs inline-flex font-medium bg-slate-100 text-slate-500 rounded-full text-center px-2.5 py-1">Minted/Not Minted</div>
-          <div className='mt-2'>
-            <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Mint coupon</button>
+          <div className="text-xs inline-flex font-medium bg-slate-100 text-slate-500 rounded-full text-center px-2.5 py-1" style={{ background: `${is_minted ? 'green' : 'red'}`, color: `${is_minted ? 'white' : 'white'}`}}>{is_minted ? "Minted" : "Not Minted"}</div>
+          <div className='mt-2 flex'>
+            {
+              !is_minted ? 
+              <>
+                <button onClick={() => {
+                  setData({
+                    store_name,
+                    description,
+                    is_minted,
+                    quantity,
+                    discount,
+                    start_date,
+                    expiry_date,
+                    issued_token,
+                    price,
+                  });
+                  setSection('mint_coupon');
+                  setShowModal(true)
+                }} className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Mint coupon</button>
+                <button onClick={() => {
+                  setData({
+                    _id,
+                    store_name,
+                    description,
+                    is_minted,
+                    quantity,
+                    discount,
+                    start_date,
+                    expiry_date,
+                    issued_token,
+                    price,
+                  });
+                  setSection('edit_coupon');
+                  setShowModal(true)
+                }} className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Edit coupon</button>
+              </> : 
+              <>
+                <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>List NFT</button>
+                <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Transfer</button>
+                <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>View</button>
+              </>
+            }
           
           </div>
         </div>
