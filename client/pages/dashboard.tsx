@@ -8,10 +8,11 @@ import AddCoupon from "../components/CouponCard/addCoupon";
 import swal from "sweetalert2";
 
 import axios from 'axios';
+import { MetadataField } from "mintbase";
 
 
 const Dashboard = () => {
-    const { wallet } = useWallet();
+    const { wallet, isConnected,  } = useWallet();
     const [stores, setStores] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [myCoupons, setMyCoupons] = useState([]);
@@ -23,11 +24,36 @@ const Dashboard = () => {
 
     function updateData(event) {
         const { name, value } = event.target;
-
         const newData = {...data}
-        newData[name] = value;
 
+        if (name === 'file') {
+            newData[name] = event.target.files[0];
+            setData(newData)
+            return;
+        }
+        newData[name] = value;
         setData(newData)
+    }
+
+
+    async function sendToMint() {
+
+        if(!isConnected) return;
+        if(!wallet) return;
+
+        const { data: uploadResponse, error: uploadError } = await wallet?.minter?.uploadField(MetadataField.Media, data['file'])
+
+        if (uploadError) {
+            console.log(uploadError)
+        }
+
+        wallet?.minter?.setMetadata({
+            title: data['title'],
+            description: data['description']
+        })
+
+        // console.log(wallet?.minter?.currentMint);
+        console.log(await wallet.mint(1, 'koopon.testnet', undefined, undefined, 'coupons'));
     }
 
 
@@ -66,7 +92,7 @@ const Dashboard = () => {
                 }
             });
 
-            console.log(res.data)
+            // console.log(res.data)
             // swal('Succssful', res.data.message, 'success');
             getMyCoupons()
             setShowModal(false);
@@ -97,8 +123,8 @@ const Dashboard = () => {
     async function fetchStore() {
         const res = await wallet?.api?.fetchAccount("koopon.testnet");
         const store = await wallet?.api?.fetchStoreById("koopon.maintest2.testnet");
-        console.log("Store details: ", store)
-        console.log(res);
+        // console.log("Store details: ", store)
+        // console.log(res);
         setStores(res?.data?.store)
 
     }
@@ -111,18 +137,12 @@ const Dashboard = () => {
 
 
 
-    console.log(data)
+    // console.log(data)
     return (
         <>
-            {/* <ul>
-                {
-                    stores?.map(item => <li key={item.id}>{item?.id}</li>)
-                }
-            </ul>
-             <button onClick={createStore}>Create store</button> */}
-            {/* <Modal /> */}
+        
             <Welcome />
-            <div className="p-4 flex" style={{}}>
+            <div className="p-4 flex flex-wrap" style={{}}>
                 {
                     myCoupons?.map(item => (
                         <CouponCard 
@@ -199,14 +219,14 @@ const Dashboard = () => {
                                         <textarea defaultValue={data?.description}  name="description" onChange={updateData} id="feedback" className="form-textarea w-full px-2 py-1 border"  required></textarea>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium mb-1" htmlFor="Tokens">File<span className="text-rose-500">*</span></label>
-                                        <input name="quantity" onChange={updateData} id="token" className="form-input w-full px-2 py-1 border" type="file" required />
+                                        <label className="block text-sm font-medium mb-1" htmlFor="file">File<span className="text-rose-500">*</span></label>
+                                        <input name="file" onChange={updateData} id="file" className="form-input w-full px-2 py-1 border" type="file" required />
                                     </div>
                                    
                                     <div className="flex flex-wrap justify-end space-x-2">
                                         
                                         <button style={{ background: 'red', color: 'white'}} onClick={() => {setShowModal(false); setData({})}} className='p-1.5 shrink-0 rounded bg-red text-color-white mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Close</button>
-                                        <button onClick={onSubmit} className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Mint coupon</button>
+                                        <button onClick={sendToMint} className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Mint coupon</button>
                                     </div>
                                     </div>
                                 </div>

@@ -50,8 +50,8 @@ function Welcome() {
 
       {/* Content */}
       <div className="relative">
-        <h1 className="text-2xl md:text-3xl text-slate-800 font-bold mb-1">Good afternoon, {wallet?.activeAccount?.accountId.split(".")[0]}👋</h1>
-        <p>Here is what’s happening with your couupons today:</p>
+        <h1 className="text-2xl md:text-3xl text-slate-800 font-bold mb-1">Hello, {wallet?.activeAccount?.accountId.split(".")[0]}👋</h1>
+        <p>Here is what’s happening with your coupons today:</p>
         <div className="text-3xl font-bold text-emerald-500">N{details.balance} available in your Near Wallet</div>
       </div>
 

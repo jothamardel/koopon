@@ -52,6 +52,7 @@ function CouponCard({
               <>
                 <button onClick={() => {
                   setData({
+                    _id,
                     store_name,
                     description,
                     is_minted,
