@@ -27,13 +27,14 @@ function CouponCard({
   expiry_date,
   issued_token,
   price,
-  setShowModal
+  setShowModal,
+  setSection
 }) {
   
   return (
     <>
       {/* Details */}
-      <div className="drop-shadow-lg mt-12 mx-4" style={{ minWidth: '12rem', paddingTop: '6.7rem', cursor: 'pointer'}} onClick={() => setShowModal(true)}>
+      <div className="drop-shadow-lg mt-12 mx-4" style={{ minWidth: '12rem', paddingTop: '6.7rem', cursor: 'pointer'}} onClick={() => {setShowModal(true); setSection('create_coupon')}}>
         
         <div className="bg-white rounded-t-xl px-5 pb-2.5 text-center pt-5">
           +

@@ -49,12 +49,14 @@ const Dashboard = () => {
 
         wallet?.minter?.setMetadata({
             title: data['title'],
-            description: data['description']
+            description: data['description'],
+            coupon_id: data['_id']
         })
 
-        // console.log(wallet?.minter?.currentMint);
         try {
-            console.log(wallet.mint(1, 'koopon.mintspace2.testnet', undefined, undefined, 'coupons'));
+            const response = await wallet.mint(1, 'koopon.mintspace2.testnet', undefined, undefined, 'coupons');
+            console.log("Response: ", response);
+            // console.log(wallet?.minter?.currentMint);
         } catch (error) {
             console.log(error);
         }
@@ -74,6 +76,8 @@ const Dashboard = () => {
                     "Content-Type": 'application/json'
                 }
             });
+
+            
 
             setMyCoupons(res.data?.data)
 
@@ -100,6 +104,11 @@ const Dashboard = () => {
             // swal('Succssful', res.data.message, 'success');
             getMyCoupons()
             setShowModal(false);
+
+            // const things = await wallet?.api?.fetchThingById('QGq2etYnse1ZU1WGnbwmfQOXsl0R5GTT8YoHu5L9uCQ:koopon.mintspace2.testnet');
+            // const things = await wallet?.api?.fetchThingById('QQa43cUOOEL-2ciOclOPMVePNB9WO6zJ6lFpgM5m2XU:koopon.mintspace2.testnet');
+            const things = await wallet?.api?.fetchStoreById('koopon.mintspace2.testnet');
+            console.log(things)
             
         } catch (error) {
             // swal('Oops!', error?.res.data.message, 'success');
@@ -126,7 +135,7 @@ const Dashboard = () => {
 
     async function fetchStore() {
         const res = await wallet?.api?.fetchAccount("koopon.testnet");
-        const store = await wallet?.api?.fetchStoreById("koopon.maintest2.testnet");
+        const store = await wallet?.api?.fetchStoreById("koopon.mintspace2.testnet'");
         // console.log("Store details: ", store)
         // console.log(res);
         setStores(res?.data?.store)
@@ -159,7 +168,7 @@ const Dashboard = () => {
                     ))
                 }
                 
-                <AddCoupon setShowModal={setShowModal}/>
+                <AddCoupon setShowModal={setShowModal} setSection={setSection} />
 
                 {
                     (showModal && (section === 'create_coupon' || section === 'edit_coupon')) &&
