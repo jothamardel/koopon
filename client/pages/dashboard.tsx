@@ -41,10 +41,10 @@ const Dashboard = () => {
         if(!isConnected) return;
         if(!wallet) return;
 
-        const { data: uploadResponse, error: uploadError } = await wallet?.minter?.uploadField(MetadataField.Media, data['file'])
+        const { data: didUpload, error } = await wallet?.minter?.uploadField(MetadataField.Media, data['file'])
 
-        if (uploadError) {
-            console.log(uploadError)
+        if (!didUpload || error) {
+            console.log(error);
         }
 
         wallet?.minter?.setMetadata({
@@ -53,7 +53,11 @@ const Dashboard = () => {
         })
 
         // console.log(wallet?.minter?.currentMint);
-        console.log(await wallet.mint(1, 'koopon.testnet', undefined, undefined, 'coupons'));
+        try {
+            console.log(wallet.mint(1, 'koopon.mintspace2.testnet', undefined, undefined, 'coupons'));
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 
