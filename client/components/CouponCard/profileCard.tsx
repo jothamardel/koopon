@@ -28,6 +28,7 @@ function CouponCard({
   start_date,
   expiry_date,
   issued_token,
+  data,
   price,
   setData,
   setSection,
@@ -85,7 +86,19 @@ function CouponCard({
               </> : 
               <>
                 <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>List NFT</button>
-                <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Transfer</button>
+                <button onClick={() => { setShowModal(true); setSection('transfer'); setData({
+                    _id,
+                    store_name,
+                    description,
+                    is_minted,
+                    quantity,
+                    discount,
+                    start_date,
+                    expiry_date,
+                    issued_token,
+                    data,
+                    price,
+                  });}} className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Transfer</button>
                 <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>View</button>
               </>
             }

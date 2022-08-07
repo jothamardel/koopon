@@ -238,9 +238,8 @@ const Dashboard = () => {
         
     }, [wallet?.activeAccount?.accountId, data?._id])
 
-
-
     console.log(data)
+
     return (
         <>
         
@@ -350,6 +349,27 @@ const Dashboard = () => {
                                         
                                         <button style={{ background: 'green', color: 'white'}} onClick={() => {sendToMint()}} className='p-1.5 shrink-0 rounded bg-red text-color-white mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Finish</button>
                                         
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                }
+                {
+                    (showModal && section === 'transfer') &&
+                        <div className="flex justify-center" style={{position: 'fixed', width: '100vw', height: '100vh', top: 0, left: 0, background: 'rgba(0, 0, 0, 0.9)', padding: '5rem 5rem'}}>
+
+                            <div className="px-5 py-4 bg-white" style={{ width: '50%'}}>
+                                    
+                                <div className="space-y-3" style={{ paddingTop: '9rem'}}>
+                                    
+                                   <h1 className="text-center">Transfer {data?.data?.title} to</h1>
+                                   <div>
+                                        <label className="block text-sm font-medium mb-1" htmlFor="accountId">Account ID <span className="text-rose-500">*</span></label>
+                                        <input  onChange={updateData} id="accountId" name="accountId" className="form-input w-full px-2 py-1 border" type="text" required placeholder={`"Enter accountId " OwnerId: ${data?.data?.ownerId}`}/>
+                                    </div>
+                                    <div className="space-x-2 text-center">
+                                        <button style={{ background: 'green', color: 'white'}} onClick={() => {setShowModal(false); setSection('')}} className='p-1.5 shrink-0 rounded bg-red text-color-white mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Transfer</button>
                                     </div>
                                     </div>
                                 </div>
