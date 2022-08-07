@@ -9,16 +9,19 @@ import swal from "sweetalert2";
 
 import axios from 'axios';
 import { MetadataField } from "mintbase";
+import { useRouter } from "next/router";
 
 
 const Dashboard = () => {
-    const { wallet, isConnected,  } = useWallet();
+    const { wallet, isConnected, details } = useWallet();
     const [stores, setStores] = useState([])
     const [showModal, setShowModal] = useState(false);
     const [myCoupons, setMyCoupons] = useState([]);
     const [section, setSection] = useState('');
 
     const [data, setData] = useState({});
+
+    const router =  useRouter();
 
 
 
@@ -36,36 +39,103 @@ const Dashboard = () => {
     }
 
 
-    async function sendToMint() {
 
+    async function mintKoopone() {
+        
         if(!isConnected) return;
         if(!wallet) return;
 
+        if(!data['file']) return alert("Please select an image to upload");
+    
         const { data: didUpload, error } = await wallet?.minter?.uploadField(MetadataField.Media, data['file'])
-
+    
         if (!didUpload || error) {
             console.log(error);
         }
-
+    
         wallet?.minter?.setMetadata({
             title: data['title'],
             description: data['description'],
             coupon_id: data['_id']
         })
 
+        localStorage.setItem('data', JSON.stringify(data));
+    
+        await wallet.mint(1, 'koopon.mintspace2.testnet', undefined, undefined, 'coupons');
+        // try {
+        //     // console.log(wallet?.minter?.currentMint);
+        // } catch (error) {
+        //     console.log(error);
+        // }
+        
+    }
+    
+    
+    async function sendToMint() {
+        
+
+        
+        
+        
+        // const getData = JSON.parse(localStorage.getItem('data'))
+        // setData(getData)
+        const store = await wallet?.api?.fetchStoreById('koopon.mintspace2.testnet');
+        // console.log(store?.data.store[0].things[store?.data.store[0].things.length - 1])
+
+
+        // console.log(store?.data.store[0])
+        
+        
+        const thing = store?.data.store[0].things[store?.data.store[0].things.length - 1];
+        
+        // console.log(thing) 
+        
+        
+        
+        
+        const account = await wallet?.api?.fetchAccount('mbiplang.testnet');
+        console.log("Account: ", account)
+        const filteredTokens = account?.data?.token?.filter((item: any) => item.id.includes('koopon')).map((item: any) => item.id.split(':')[0]).sort((a:any, b:any) => a - b)
+        const rightToken = account?.data?.token?.filter((item: any) => item.id.includes(filteredTokens[filteredTokens.length - 1]))
+        const metaData = await wallet?.api?.fetchThingMetadata(rightToken[0]?.thing?.id)
+        const tokenData = await wallet?.api?.fetchTokenById(rightToken[0]?.id)
+        // console.log("Account: ", account)
+        
+        // console.log("Meta Data: ", metaData)
+        // console.log("Token Data: ", tokenData)
+        // console.log("Lastest token: ", rightToken) 
+        const update = {...metaData?.data, ...tokenData?.data}
+        // console.log("Data: ", data)
+        
+        if (!data._id) return;
+        
+        
+        console.log("loading...", data)
         try {
-            const response = await wallet.mint(1, 'koopon.mintspace2.testnet', undefined, undefined, 'coupons');
-            console.log("Response: ", response);
-            // console.log(wallet?.minter?.currentMint);
+            const res = await axios.put(`https://still-garden-99623.herokuapp.com/koopon/${data?._id}`, {data: update, is_minted: true}, {
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            });
+            
+            localStorage.removeItem('data')
+            setData({})
+            setShowModal(false)
+            setSection('');
+            
+
+            // console.log(res)
+
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
+     
     }
 
 
 
 
-    async function getMyCoupons(e) {
+    async function getMyCoupons() {
 
         const newData = {...data}
         newData.account_id = wallet?.activeAccount?.accountId ;
@@ -135,11 +205,13 @@ const Dashboard = () => {
 
     async function fetchStore() {
         const res = await wallet?.api?.fetchAccount("koopon.testnet");
-        const store = await wallet?.api?.fetchStoreById("koopon.mintspace2.testnet'");
-        // console.log("Store details: ", store)
-        // console.log(res);
-        setStores(res?.data?.store)
+        const store = await wallet?.api?.fetchStoreById("koopon.mintspace2.testnet");
+        const user = store?.data?.store[0]?.minters?.filter((item: any) => item.account.includes(details.accountId))
 
+        // wallet?.grantMinter(details.accountId, "koopon.mintspace2.testnet");
+        // if (!user?.length) {
+        // }
+        setStores(res?.data?.store);
     }
 
     useEffect(() => {
@@ -150,7 +222,25 @@ const Dashboard = () => {
 
 
 
-    // console.log(data)
+    useEffect(() => {
+        // console.log(data)
+        if (data?._id) return;
+        const getData = JSON.parse(localStorage.getItem('data'))
+        if (!getData) {
+            setData({});
+            setSection('');
+            setShowModal(false);
+            return;
+        }
+        setData(getData);
+        setSection('confirm');
+        setShowModal(true);
+        
+    }, [wallet?.activeAccount?.accountId, data?._id])
+
+
+
+    console.log(data)
     return (
         <>
         
@@ -239,7 +329,27 @@ const Dashboard = () => {
                                     <div className="flex flex-wrap justify-end space-x-2">
                                         
                                         <button style={{ background: 'red', color: 'white'}} onClick={() => {setShowModal(false); setData({})}} className='p-1.5 shrink-0 rounded bg-red text-color-white mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Close</button>
-                                        <button onClick={sendToMint} className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Mint coupon</button>
+                                        <button onClick={mintKoopone} className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Mint coupon</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                }
+                {
+                    (showModal && section === 'confirm') &&
+                        <div className="flex justify-center" style={{position: 'fixed', width: '100vw', height: '100vh', top: 0, left: 0, background: 'rgba(0, 0, 0, 0.9)', padding: '5rem 5rem'}}>
+
+                            <div className="px-5 py-4 bg-white" style={{ width: '50%'}}>
+                                    
+                                <div className="space-y-3" style={{ paddingTop: '9rem'}}>
+                                    
+                                   <h1 className="text-center">{data?.title} minted successfully!</h1>
+                                   
+                                    <div className="space-x-2 text-center">
+                                        
+                                        <button style={{ background: 'green', color: 'white'}} onClick={() => {sendToMint()}} className='p-1.5 shrink-0 rounded bg-red text-color-white mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Finish</button>
+                                        
                                     </div>
                                     </div>
                                 </div>

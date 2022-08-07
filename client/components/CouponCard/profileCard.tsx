@@ -108,7 +108,7 @@ function CouponCard({
         <div className="bg-white rounded-b-xl p-5 pt-2.5 text-sm space-y-3">
           <div className="flex justify-between space-x-1">
             <span className="italic">Discount:</span>
-            <span className="font-medium text-slate-700 text-right">{discount}</span>
+            <span className="font-medium text-slate-700 text-right">{discount}%</span>
           </div>
           <div className="flex justify-between space-x-1">
             <span className="italic">Start Date:</span>

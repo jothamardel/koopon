@@ -26,7 +26,8 @@ function CouponCard({
   start_date,
   expiry_date,
   issued_token,
-  price
+  price,
+  data
 }) {
   
   return (
@@ -39,7 +40,8 @@ function CouponCard({
             {/* <img className="inline-flex w-12 h-12 rounded-full -mt-6" src={Image} width="48" height="48" alt="Transaction 04" /> */}
           </div>
           <div className="text-2xl font-semibold text-emerald-500 mb-1">{price}N</div>
-          <div className="text-sm font-medium text-slate-800 mb-3">{store_name}</div>
+          <div className="text-sm font-medium text-slate-800 mb-3">{data?.title}</div>
+          <div className="text-sm font-medium text-slate-800 mb-3">Store: {data?.store?.id}</div>
           {/* <div className="text-xs inline-flex font-medium bg-slate-100 text-slate-500 rounded-full text-center px-2.5 py-1">{!is_minted}</div> */}
           <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Buy</button>
           <button className='p-1.5 shrink-0 rounded text-color-grey mx-2 border border-slate-200 hover:border-slate-300 shadow-sm'>Trade</button>
@@ -60,7 +62,7 @@ function CouponCard({
         <div className="bg-white rounded-b-xl p-5 pt-2.5 text-sm space-y-3">
           <div className="flex justify-between space-x-1">
             <span className="italic">Discount:</span>
-            <span className="font-medium text-slate-700 text-right">{discount}</span>
+            <span className="font-medium text-slate-700 text-right">{discount}%</span>
           </div>
           <div className="flex justify-between space-x-1">
             <span className="italic">Start Date:</span>
